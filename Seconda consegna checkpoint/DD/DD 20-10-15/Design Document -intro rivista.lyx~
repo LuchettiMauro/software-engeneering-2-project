@@ -1,0 +1,850 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{blindtext}\usepackage{color}\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{18pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\author{Losio Davide Francesco, Luchetti Mauro, Mosca Paolo}
+\title{myTaxiService\\Software Design Document\\ Version 1.0}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding iso8859-1
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+This documentation will be used to aid in software development by providing
+ further details of how the software should be built.
+ Within the Software Design Document are narrative and graphical documentation
+ of the software design of the project including use case models, sequence
+ diagrams, and other supporting requirement information.
+\end_layout
+
+\begin_layout Section
+Purpose
+\end_layout
+
+\begin_layout Standard
+The purpose of the Software Design Document is to provide a description
+ of MyTaxiService system design and architecture fully enough to allow software
+ development to proceed with an understanding of what is to be built and
+ how it is expected to be built.
+ To achieve this DD(
+\series bold
+D
+\series default
+esign 
+\series bold
+D
+\series default
+ocument) translates and states more accurately the Requirement Specifications
+ described in the MyTaxyService RASD document.
+ It identifies high-level system architecture and design framework as well
+ as hardware, software, communication and interface components.
+\end_layout
+
+\begin_layout Section
+Scope
+\end_layout
+
+\begin_layout Standard
+MyTaxiService application is a server/client combination that will allow
+ a user to handle different type of taxi service, keeping track of all the
+ transaction necessary for the completion of each operations.
+ This will include booking a taxi, request a taxi as soon as possible, the
+ handling of the sharing option and, for the taxi drivers, the managing
+ of the taxi queue.
+ All this functionalities will be guaranteed in the way and in the manner
+ explained in the RASD document.
+ Via a Cross Platform Web Environment (by the use of angularJS, Ionic, Cordova
+ and nodeJS frameworks), the MyTaxiService will be able to run on various
+ platforms, including Unix, Linux and Windows based systems, and all the
+ portable devices based on Android and Ios.
+ When a network connection to the server is available, the user will be
+ able to synchronize his PD (
+\series bold
+P
+\series default
+ortable 
+\series bold
+D
+\series default
+evice) or PC with the server, he will be able to log in or register and
+ makes his own request in the case of the passenger-user.
+ Or to set is availability, accepts or rejects request in the case of the
+ taxi-driver user.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ Below are stated some main issues with which the system has to be capable
+ to cope with.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+PD Issues:
+\series default
+ Because of memory limitations, a PD will only store data and application
+ parts that are strictly necessary for a PD user.
+ Also, PDs have reduced screen size and limited input capability compared
+ to PCs, so we will design PD standalone functionality in manner that can
+ be easily presented on a typical 240x320 screen.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Synchronization:
+\series default
+ We will implement server software to serve as an interface between the
+ PC or PD and the Application logic, by the re-using of already existent
+ services offered by third parties company.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Transaction and Queue Managing:
+\series default
+ all the transactions and booking procedure will be handled by the application
+ logic layer that will be divided from the presentation layer, as well as
+ the queue managing features and algorithm.
+ PDs will implement only presentation layer and connection functionalities.
+ 
+\end_layout
+
+\begin_layout Section
+Definitions, Acronyms, Abbreviations
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+RASD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+R
+\series default
+equirements 
+\series bold
+S
+\series default
+pecification 
+\series bold
+A
+\series default
+nalysis 
+\series bold
+D
+\series default
+ocument 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+DD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+D
+\series default
+esign 
+\series bold
+D
+\series default
+ocument 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+PD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+P
+\series default
+ortable 
+\series bold
+D
+\series default
+evice 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+MVC:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{M}
+\end_layout
+
+\end_inset
+
+odel 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{C}
+\end_layout
+
+\end_inset
+
+ontrol 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{V}
+\end_layout
+
+\end_inset
+
+iew
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+MyTaxyService RASD
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ - November/6/2015, edited by Dadoz+Grin-Go+Pol Corporation; 
+\end_layout
+
+\begin_layout Section
+Document Structure and Overview
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Architectural Design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section is the main focus of this document.
+ It provides an overview of the system's major components and architecture,
+ as well as architectural styles, pattern used and other design decision.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+a detailed analysis of modules will also describe lower-level classes, component
+s, and functions, as well as the interaction between these internal components.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Algorithm design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section is focused on the definition of the most relevant algorithm
+ of the project.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+User interface design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section provide an overview on how the user interface(s) of the system
+ will look like.
+ In particular, referring on what has already stated in the RASD, here some
+ further details is specified.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Requirements Traceability:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section explain how the requirements defined in the RASD map into
+ the design elements that are defined in this document.
+ 
+\end_layout
+
+\begin_layout Chapter
+Architectural Design
+\end_layout
+
+\begin_layout Section
+Overview
+\end_layout
+
+\begin_layout Standard
+This sections analyze several different part of the design architecture:
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+System Components And Their Interactions:
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ here are individuated and stated the main system software components in
+ which the software is split into, and in the interactions among them.
+ To achieve this latter feature, will be provided a high level description
+ of the interfaces to be set-up.
+ Within this description are: 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Component; 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Deployment; 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Runtime;
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ UML diagrams.
+ These diagrams are intended as a supply to the better understanding, as
+ well as a more clear and simply specification of our components division.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Architectural Styles And Patterns
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ here are listed the architectural styles and patterns to use to solve the
+ main interactions and functionality problems.
+ They are taken in this first version of the DD more as suggestions and
+ ideas.
+ They will be updated and revised during the developing of the application
+ where requested by the circumstances.
+ In the sense that if the patterns and architectural styles will actually
+ reveal to be unfeasible, different approach will be evaluated and chosen.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Other Design Decision:
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ Some other decision that doesn't belong to other section are listed here.
+ 
+\end_layout
+
+\begin_layout Section
+System Components 
+\end_layout
+
+\begin_layout Standard
+The system to be produced is a client/server system with the common MVC
+ pattern.
+ The components are splitted in order to represent this logic.
+ For each component the main modules are listed.
+\end_layout
+
+\begin_layout Subsection
+Server application logic
+\end_layout
+
+\begin_layout Standard
+This component represent the core logic of the whole system.
+ Modules here contained are responsible for the correct features functioning
+ of MyTaxiService.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Queue Handler
+\end_layout
+
+\begin_layout Standard
+This module has to guarantee the right usage of the queues into the application.
+ The operations that this module handles are: add a new driver to the queue,
+ delete a driver from the queue, select the first driver in the queue and
+ move a driver from top to the bottom of the queue.
+\end_layout
+
+\begin_layout Subsubsection
+Requests Handler
+\end_layout
+
+\begin_layout Standard
+This module is responsable of the correct forwarding of each request coming
+ from a user.
+ It is in straight contact with the Queue Handler module because of his
+ necessity to send requests to drivers.
+\end_layout
+
+\begin_layout Subsubsection
+Notification Center
+\end_layout
+
+\begin_layout Standard
+This module manages any notification generated by a user, wheather it is
+ a passenger or a taxi driver, or by the system itself, as in the case of
+ error messages.
+ The operations that this module handles are: generate an error messa.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Server communicator
+\end_layout
+
+\begin_layout Standard
+This component represent the part of the system that is directly in contact
+ with the users.
+\end_layout
+
+\begin_layout Subsubsection
+User communicator
+\end_layout
+
+\begin_layout Standard
+This module is responsible of the correct forwarding information between
+ the server and a user.
+ The operations that this module handles are: receive a message from a user,
+ send a message to a user, handle timout errors.
+\end_layout
+
+\begin_layout Subsubsection
+Driver communicator
+\end_layout
+
+\begin_layout Standard
+This module is responsible of the correct forwarding information between
+ the server and a driver.
+ The operations that this module handles are: receive a message from a driver,
+ send a message to a driver, handle timout errors.
+\end_layout
+
+\end_body
+\end_document
