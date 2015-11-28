@@ -1087,7 +1087,8 @@ sentence
 \begin_inset Quotes erd
 \end_inset
 
- and in this case, to restore his all functionalities.
+ and in this case, to restore his all functionalities and return the information
+ to the user view.
 \end_layout
 
 \begin_layout Subsection
@@ -1215,34 +1216,6 @@ status open
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{figure}[H] 
-\backslash
-makebox[
-\backslash
-textwidth][c]{ 
-\backslash
-includegraphics[width=1.2
-\backslash
-textwidth]{
-\backslash
-string"DD images/Component scheme".png} } 
-\backslash
-end{figure}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
 
 \end_layout
 
@@ -2655,7 +2628,7 @@ Passenger User Requirements
 \begin_layout Standard
 • 
 \series bold
-Taxi now/Book a taxi 
+Taxi now/Book a taxi:
 \end_layout
 
 \begin_layout Labeling
@@ -2805,9 +2778,7 @@ The outcome of the Request Handler in the model, as well as all the model
 \begin_layout Itemize
 
 \series bold
-Taxi sharing
-\series default
- 
+Taxi sharing:
 \end_layout
 
 \begin_layout Labeling
@@ -2830,8 +2801,7 @@ This feature is performed by the shareable ride finder component.
 \series bold
 Reservation deleting
 \series default
- The following requirement has to be satisfied by the system in order to
- perform the correct execution of the deleting:
+:
 \end_layout
 
 \begin_layout Labeling
@@ -2855,10 +2825,7 @@ Taxi Driver requirements
 \begin_layout Itemize
 
 \series bold
-accept/reject a request
-\series default
- The following requirements have to be satisfied by the system in order
- to perform the correct execution of the answer:
+accept/reject a request:
 \end_layout
 
 \begin_layout Labeling
@@ -2932,9 +2899,7 @@ The functionality is performed by the Mapping Features Handler component,
 \series bold
 Change of the availability state
 \series default
- The Taxi-Driver should be allowed to change his availability state.
- The following requirements have to be satisfied by the system in order
- to perform the correct feature execution:
+:
 \end_layout
 
 \begin_layout Labeling
@@ -3003,5 +2968,97 @@ This functionalities are embedded in the Queue Handler procedure and methods.
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+
+\series bold
+ban for unfair clients:
+\series default
+ 
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall provide an “unfair client” option that allows taxi drivers
+ to communicate an inappropriate client behavior (e.g.
+ false reservation).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Functionalities are provided by the taxi driver view, as stated in RASD
+ in chapter 3.1.1, inside the user interface description and mockups.
+ Therefore in the model is performed by the Ban Handler related methods.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R2 The system shall recognize a banned client and prevents any reservation
+ for a limited chosen time (e.g.
+ 1 week).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Functionalities are performed by the Ban Handler related methods.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R3 The system shall notify to a banned client his condition when he receives
+ a ban.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is ensured and embedded in MVC pattern adopted.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R4 The system shall display “ban information”, such as time left, for banned
+ clients that logged-in.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is performed by a suitable view, as stated in RASD in chapter 3.1.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R5 The system shall notify to a banned client that he is no longer banned
+ when ban time is over.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is ensured and embedded in MVC pattern adopted as the outcome of Ban
+ handler periodically check procedure.
+ a suitable view, as stated in RASD in chapter 3.1, is related to the representat
+ion of this features.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Queue Managing:
+\end_layout
+
+\begin_layout Standard
+This feature are strictly embedded in the realization of the queue handler
+ component and are not further analyzed here.
+\end_layout
+
 \end_body
 \end_document

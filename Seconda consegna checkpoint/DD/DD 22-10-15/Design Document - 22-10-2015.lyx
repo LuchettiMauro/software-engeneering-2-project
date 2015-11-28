@@ -1065,6 +1065,29 @@ This module has to deal with the user's personal data.
  It has to record in the DBMS the registration information and to query
  the log-in information provided by the user, finally it has to checks if
  there is a correct match.
+ To perform the log-in procedure with regards of the requirements stated
+ in RASD, this module has to check also the ban state of the user, and in
+ case he has to block the user functionalities.
+\end_layout
+
+\begin_layout Subsubsection
+Ban Handler
+\end_layout
+
+\begin_layout Standard
+This component is responsible for the managing of the ban policies.
+ Its task is to store correctly the banned users in a suitable memory structure.
+ It has to return the ban state of a user when another component query it
+ and it also have to periodically check if a banned user have serve his
+ 
+\begin_inset Quotes eld
+\end_inset
+
+sentence
+\begin_inset Quotes erd
+\end_inset
+
+ and in this case, to restore his all functionalities.
 \end_layout
 
 \begin_layout Subsection
@@ -1444,7 +1467,7 @@ begin{lstlisting}
 
 \begin_layout Plain Layout
 
-	public static void handleRequest(Request request)    
+	public static void handleRequest(Request request, Queue queue)    
 \end_layout
 
 \begin_layout Plain Layout
@@ -1477,6 +1500,52 @@ what
  It has to forward the immediate request to a Taxi Driver, acordingly to
  the constraints stated for this operation in the previous analysis.
  Otherwise it has to store the booking request in a suitable memory structure.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static Boolean deleteRequest(Request request, Queue queue)    
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}          
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+input: It receives the request and the queue to which is addressed as input.
+\end_layout
+
+\begin_layout Description
+output: It return a Boolean values that state the success or failure of
+ the operation.
+\end_layout
+
+\begin_layout Description
+what
+\series bold
+ he do
+\series default
+: Delete the stored request after a feasibility checks of the operation
+ according do deleting operation constraints stated in rasd.
 \end_layout
 
 \begin_layout Subsection
@@ -1616,7 +1685,7 @@ begin{lstlisting}
 
 \begin_layout Plain Layout
 
-	public static boolean userCredentialCheck(LoginData lData)    
+	public static booleanValues userCredentialCheck(LoginData lData)    
 \end_layout
 
 \begin_layout Plain Layout
@@ -1636,8 +1705,102 @@ input: It receives the users data as input.
 \end_layout
 
 \begin_layout Description
-output: It return a Boolean value that state the success or the failure
- of the login operation.
+output: It return a first Boolean value that state the success or the failure
+ of the login operation, and a second Boolean value that state if a user
+ is banned or not.
+ The two Boolean are store in a list-like memory structure .
+\end_layout
+
+\begin_layout Description
+what
+\series bold
+ he do
+\series default
+: -
+\end_layout
+
+\begin_layout Subsection
+Ban Handler
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static boolean addBannedUser(LoginData lData)    
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}          
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+input: It receives the users data as input.
+\end_layout
+
+\begin_layout Description
+output: Boolean that state the success or the failure of the operation.
+\end_layout
+
+\begin_layout Description
+what
+\series bold
+ he do
+\series default
+: Correctly store the banned user in a suitable memory structure.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static boolean userBanned(LoginData lData)    
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting}          
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+input: It receives the users data as input.
+\end_layout
+
+\begin_layout Description
+output: It return a Boolean value that state if the user is actually banned.
 \end_layout
 
 \begin_layout Description
@@ -2450,6 +2613,397 @@ end{lstlisting}
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Chapter
+User interface design
+\end_layout
+
+\begin_layout Standard
+This part is already stated in the RASD document and is only reported here
+ for the sake of completeness, and to have a reference.
+\end_layout
+
+\begin_layout Standard
+you can find this part in:
+\end_layout
+
+\begin_layout Itemize
+RASD - Chapter 3.1.1 that starts from page 8 thorough 15.
+\end_layout
+
+\begin_layout Standard
+here is state a fulfilled description of the interface, both in terms of
+ functionality and graphical design; both with textual description and graphical
+ mockups.
+\end_layout
+
+\begin_layout Chapter
+Requirements Traceability
+\end_layout
+
+\begin_layout Standard
+It is explained here how the requirements defined in the RASD map into the
+ design elements defined in this document.
+\end_layout
+
+\begin_layout Section
+Passenger User Requirements
+\end_layout
+
+\begin_layout Standard
+• 
+\series bold
+Taxi now/Book a taxi 
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall check at eventual user’s ban before allowing the user
+ to do reservations.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is ensured By the Ban Handler in collaboration with the log-in handler
+ component.
+ The Ban is checked at the log-in moment.
+ If a user is banned the system automatically block all the user functionalities.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R2 The system shall contact the first queued taxi driver in the specific
+ city-zone requested by the user.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is performed by the Queue Handler and the Request Handler.
+ The request handler will contact a queue Handler, which takes care of forward
+ the Request, to the first Driver in the zone queue.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R3 The system shall create a private session for each reservation, situation
+ with concurrent requests for the same driver must be avoided.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is handled by the Queue Handler.
+ Since either the driver is moved out the queue in the same time it receives
+ a request.
+ This is acceptable because if the driver either accept or reject the request
+ it has to be moved out the queue.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R4 The system shall grant the correct priority in queuing taxis.
+ A driver who does not accept a reservation request must be moved in the
+ bottom of the queue.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is handled by the Queue Handler.
+ The correctness of the operation performed by the Handler is ensured by
+ the queue structure of the memory structure adopted.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R5 The system shall avoid wrong inputs such as same start and destination
+ address.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Checks are performed by the request handler in collaboration with the mapping
+ system, during the handling of the request.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R6 The system shall notify to the requesting user that a taxi driver has
+ been found.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The outcome of the Request Handler in the model, as well as all the model
+ outcomes, generates a view change, in this case a pop-up.
+ This is ensured and embedded in MVC pattern adopted.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R7 The system shall notify to the requesting user the waiting time of the
+ first taxi, the fee and the taxi code number.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The outcome of the Request Handler in the model, as well as all the model
+ outcomes, generates a view change, in this case a pop-up.
+ This is ensured and embedded in MVC pattern adopted.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R8 The system shall guarantee that a reservation has to occur at least two
+ hours before the ride.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This kind of Checks are performed by the Request handler class.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R9 The system shall guarantee that each request corresponds an answer message
+ which also brings a taxi confirmation.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is ensured by the logical order in which the procedure is performed.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R10 The system shall give a confirmation about the booking taken in charge.
+ inputs starting and ending position; date; time; sharing option.
+ outputs booking acknowledged or denied
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The outcome of the Request Handler in the model, as well as all the model
+ outcomes, generates a view change, in this case a pop-up.
+ This is ensured and embedded in MVC pattern adopted.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Taxi sharing
+\series default
+ 
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall check if another user has already reserved a taxi for
+ the same destination with the share option activated.
+ If this happens, the best route is calculated and sent to the driver.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This feature is performed by the shareable ride finder component.
+ Whereas route calculating is performed by the Mapping features component.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Reservation deleting
+\series default
+ The following requirement has to be satisfied by the system in order to
+ perform the correct execution of the deleting:
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall grant the possibility to delete a reservation for a
+ user.
+ This must be true only two hours before, whereupon this possibility is
+ no longer available.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This functionalities is performed by the related Queue Handler method.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Taxi Driver requirements
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+accept/reject a request
+\series default
+ The following requirements have to be satisfied by the system in order
+ to perform the correct execution of the answer:
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall grant the access to the driver GUI only for those accounts
+ that have the correct credentials.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This checks is performed by the log-in Component.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R2 The system shall control that all the drivers waiting in the queue are
+ eventually available.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Since the Queue Handler add only available driver, the requirements is implicitl
+y fulfilled.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R3 The system shall grant that only one driver at a time have access to
+ a reservation request.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Since the Queue Handler forward a request only to the first driver in queue,
+ the requirements is implicitly fulfilled.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R4 The system shall notify at the first queued driver the request.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Already stated above, in R3 requirements.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R5 The system shall update the taxi driver user's ride schedule for each
+ confirmation sent.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The functionality is performed by the Mapping Features Handler component,
+ in collaboration with the Request Handler.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Change of the availability state
+\series default
+ The Taxi-Driver should be allowed to change his availability state.
+ The following requirements have to be satisfied by the system in order
+ to perform the correct feature execution:
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R1 The system shall provide a “not available” option that allows taxi drivers
+ to exit from the waiting queue in case they pick up a person without using
+ the service.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Functionalities is provided by the taxi driver view, as stated in RASD in
+ chapter 3.1.1, inside the user interface description and mockups.
+ The use of this functionalities apply a change performed by the Queue Handler
+ and in particular by his Remove/add Driver in queue related methods.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R2 The system shall automatically switch to 
+\begin_inset Quotes eld
+\end_inset
+
+not available
+\begin_inset Quotes erd
+\end_inset
+
+ a driver who takes charge of a reservation.
+ This driver is removed from the queue.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This functionalities are ensured by the Queue Handler and The Request Handler.
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+R3 The system shall automatically switch to 
+\begin_inset Quotes eld
+\end_inset
+
+not available
+\begin_inset Quotes erd
+\end_inset
+
+ a driver who is not enqueued and switch to 
+\begin_inset Quotes eld
+\end_inset
+
+available
+\begin_inset Quotes erd
+\end_inset
+
+ an enqueued one.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This functionalities are embedded in the Queue Handler procedure and methods.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
 
 \end_layout
 
