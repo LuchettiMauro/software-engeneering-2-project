@@ -1,0 +1,1674 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{amsfonts}
+\usepackage {listings,xcolor}
+\lstset{language=JAVA}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{blindtext}
+\usepackage{color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{18pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\author{Losio Davide Francesco, Luchetti Mauro, Mosca Paolo}
+\title{myTaxiService\\Software Design Document\\ Version 1.0}
+
+\lstdefinestyle{JAVA}{
+         language=JAVA,
+         basicstyle=\scriptsize\ttfamily,
+         numbers=left,               
+         numberstyle=\tiny,         
+         numbersep=4pt,             
+         tabsize=1,                 
+         extendedchars=false,         
+         breaklines=true,           
+         frame=tb,               
+         showspaces=false,           
+         showtabs=false,           
+         xleftmargin=17pt,
+         framexleftmargin=14pt,
+         framexrightmargin=3pt,
+         framexbottommargin=2pt,
+         commentstyle=\slshape\color[gray]{0.3},
+         stringstyle=\slshape\color{black},
+         backgroundcolor=\color[gray]{0.95},
+%         showstringspaces=false       
+         moredelim=[is][\bfseries]{>}{<}   
+}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding iso8859-1
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+This documentation will be used to aid in software development by providing
+ further details of how the software should be built.
+ Within the Software Design Document are narrative and graphical documentation
+ of the software design of the project including use case models, sequence
+ diagrams, and other supporting requirement information.
+\end_layout
+
+\begin_layout Section
+Purpose
+\end_layout
+
+\begin_layout Standard
+The purpose of the Software Design Document is to provide a description
+ of MyTaxiService system design and architecture fully enough to allow software
+ development to proceed with an understanding of what is to be built and
+ how it is expected to be built.
+ To achieve this DD(
+\series bold
+D
+\series default
+esign 
+\series bold
+D
+\series default
+ocument) translates and states more accurately the Requirement Specifications
+ described in the MyTaxyService RASD document.
+ It identifies high-level system architecture and design framework as well
+ as hardware, software, communication and interface components.
+\end_layout
+
+\begin_layout Section
+Scope
+\end_layout
+
+\begin_layout Standard
+MyTaxiService application is a server/client combination that will allow
+ a user to handle different type of taxi service, keeping track of all the
+ transaction necessary for the completion of each operations.
+ This will include booking a taxi, request a taxi as soon as possible, the
+ handling of the sharing option and, for the taxi drivers, the managing
+ of the taxi queue.
+ All this functionalities will be guaranteed in the way and in the manner
+ explained in the RASD document.
+ Via a Cross Platform Web Environment (by the use of angularJS, Ionic, Cordova
+ and nodeJS frameworks), the MyTaxiService will be able to run on various
+ platforms, including Unix, Linux and Windows based systems, and all the
+ portable devices based on Android and Ios.
+ When a network connection to the server is available, the user will be
+ able to synchronize his PD (
+\series bold
+P
+\series default
+ortable 
+\series bold
+D
+\series default
+evice) or PC with the server, he will be able to log in or register and
+ makes his own request in the case of the passenger-user.
+ Or to set is availability, accepts or rejects request in the case of the
+ taxi-driver user.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ Below are stated some main issues with which the system has to be capable
+ to cope with.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+PD Issues:
+\series default
+ Because of memory limitations, a PD will only store data and application
+ parts that are strictly necessary for a PD user.
+ Also, PDs have reduced screen size and limited input capability compared
+ to PCs, so we will design PD standalone functionality in manner that can
+ be easily presented on a typical 240x320 screen.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Synchronization:
+\series default
+ We will implement server software to serve as an interface between the
+ PC or PD and the Application logic, by the re-using of already existent
+ services offered by third parties company.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Transaction and functionalities:
+\series default
+ all the transactions and booking procedure will be handled by the application
+ logic layer that will be divided from the presentation layer, as well as
+ the queue managing features and algorithm.
+ PDs will implement only presentation layer and connection functionalities.
+ 
+\end_layout
+
+\begin_layout Standard
+The architecture will be developed and structured to support the fulfillment
+ of this main issues.
+ 
+\end_layout
+
+\begin_layout Section
+Definitions, Acronyms, Abbreviations
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+RASD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+R
+\series default
+equirements 
+\series bold
+S
+\series default
+pecification 
+\series bold
+A
+\series default
+nalysis 
+\series bold
+D
+\series default
+ocument 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+DD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+D
+\series default
+esign 
+\series bold
+D
+\series default
+ocument 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+PD:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+P
+\series default
+ortable 
+\series bold
+D
+\series default
+evice 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+MVC:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{M}
+\end_layout
+
+\end_inset
+
+odel 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{C}
+\end_layout
+
+\end_inset
+
+ontrol 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{V}
+\end_layout
+
+\end_inset
+
+iew
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+FIFO:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+F
+\series default
+irst 
+\series bold
+I
+\series default
+n 
+\series bold
+F
+\series default
+irst 
+\series bold
+O
+\series default
+ut, it's a policy applied to the queue managing.
+ It means that the first person to be enqueued will be the first to be dequeued
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+PAAS:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+P
+\series default
+latform 
+\series bold
+A
+\series default
+s 
+\series bold
+A
+\series default
+ 
+\series bold
+S
+\series default
+ervice
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+SOA:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+S
+\series default
+ervice 
+\series bold
+O
+\series default
+riented 
+\series bold
+A
+\series default
+rchitecture
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+MyTaxyService RASD
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ - November/6/2015, edited by Dadoz+Grin-Go+Pol Corporation; 
+\end_layout
+
+\begin_layout Section
+Document Structure and Overview
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Architectural Design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section is the main focus of this document.
+ It provides an overview of the system's major components and architecture,
+ as well as architectural styles, pattern used and other design decision.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+a detailed analysis of modules will also describe lower-level classes, component
+s, and functions, as well as the interaction between these internal components.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Algorithm design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section is focused on the definition of the most relevant algorithm
+ of the project.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+User interface design:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section provide an overview on how the user interface(s) of the system
+ will look like.
+ In particular, referring on what has already stated in the RASD, here some
+ further details is specified.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\series bold
+Requirements Traceability:
+\series default
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ this section explain how the requirements defined in the RASD map into
+ the design elements that are defined in this document.
+ 
+\end_layout
+
+\begin_layout Chapter
+Architectural Design
+\end_layout
+
+\begin_layout Section
+Overview
+\end_layout
+
+\begin_layout Standard
+This sections analyze several different part of the design architecture:
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+System Components And Their Interactions:
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ here are individuated and stated the main system software components in
+ which the software is split into, and in the interactions among them.
+ To achieve this latter feature, will be provided a high level description
+ of the interfaces to be set-up.
+ Within this description are: 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Component; 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Deployment; 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+subitem
+\end_layout
+
+\end_inset
+
+ Runtime;
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ UML diagrams.
+ These diagrams are intended as a supply to the better understanding, as
+ well as a more clear and simply specification of our components division.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Architectural Styles And Patterns
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ here are listed the architectural styles and patterns to use to solve the
+ main interactions and functionality problems.
+ They are taken in this first version of the DD more as suggestions and
+ ideas.
+ They will be updated and revised during the developing of the application
+ where requested by the circumstances.
+ In the sense that if the patterns and architectural styles will actually
+ reveal to be unfeasible, different approach will be evaluated and chosen.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Other Design Decision:
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ Some other decision that doesn't belong to other section are listed here.
+ 
+\end_layout
+
+\begin_layout Section
+System Components 
+\end_layout
+
+\begin_layout Standard
+The system to be produced implement the common MVC pattern.
+ The components are split in order to represent this logic.
+ For each component the main modules are listed.
+\end_layout
+
+\begin_layout Subsection
+Server Model
+\end_layout
+
+\begin_layout Standard
+This component represent the core logic of the whole system.
+ Modules contained here are responsible for the correct performing of MyTaxiServ
+ice features.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Queue Handler
+\end_layout
+
+\begin_layout Standard
+This module has to guarantee the right usage of a FIFO (
+\series bold
+F
+\series default
+irst 
+\series bold
+I
+\series default
+n 
+\series bold
+F
+\series default
+irst 
+\series bold
+O
+\series default
+ut) queues into the application.
+ Keeping in mind that each zones has is own queue, the operations that this
+ module handles are: add a new driver to the queue, delete a driver from
+ the queue, select the first driver in the queue and move a driver from
+ top to the bottom of the queue.
+ It has to follow some rules deduced from the RASD document:
+\end_layout
+
+\begin_layout Itemize
+To add a new driver it has to be available.
+\end_layout
+
+\begin_layout Itemize
+A new driver has to be added into the right queue, that is related to the
+ geographical location of the taxi
+\end_layout
+
+\begin_layout Itemize
+The deleting of a driver implies that he has accepted/reject a request or
+ that he is become unavailable.
+\end_layout
+
+\begin_layout Subsubsection
+Requests Handler
+\end_layout
+
+\begin_layout Standard
+This module is responsible of the correct forwarding of each request coming
+ from a user.
+ It is in straight contact with the Queue Handler module because of his
+ necessity to send requests to drivers.
+ Furthermore, it embed some specific functionalities with respect of the
+ request type:
+\end_layout
+
+\begin_layout Itemize
+It has to forward the request with the sharing option enabled to the shareable
+ ride finder.
+ 
+\end_layout
+
+\begin_layout Itemize
+It has to store the booking in a correct structure that provide to notify
+ the system 10 minutes before the reservation time to perform the effective
+ taxi allocation.
+\end_layout
+
+\begin_layout Subsubsection
+Shareable Ride Finder
+\end_layout
+
+\begin_layout Standard
+This is a sub-component of the request handler, its aim is to list-out the
+ rides which have the same origin and destination position of the analyzed
+ ride.
+ The research is done upon a suitable memorization structure, in which are
+ stated all the pending request, either they are booking request or immediate
+ request.
+ The immediate request will be stored in that structure for at most three
+ minutes, this in order to keep consistent their 
+\begin_inset Quotes eld
+\end_inset
+
+immediate
+\begin_inset Quotes erd
+\end_inset
+
+ peculiarity.
+ At the end of this time-out, an immediate request with the shareable option
+ enabled will be treated as a non shareable ride and the passenger will
+ have to pay the entire fee.
+ During the performing of the search algorithm, the user will be able to
+ stop this research in any moment, thanks to this, the user can decide to
+ not wait for an outcome.
+\end_layout
+
+\begin_layout Subsubsection
+Mapping Features Handler
+\end_layout
+
+\begin_layout Standard
+This module has to deal mainly with the google maps API.
+ On the passenger side, it has to support the origin and destination addresses
+ input.
+ It has to guarantee the correctness of these addresses and to show a graphical
+ map representation in order to enhance the interactivity.
+ Whether on the taxi driver side, it has to deal with the queue manager
+ by providing the driver positions, this allow the queue manager to assign
+ the taxi to the right queue.
+ Moreover it has to perform some navigation features.
+ It has to provide the taxi driver with the available paths, distance and
+ travel time to arrive at the passenger location.
+ This can support the accept/reject decision of a request by a taxi driver.
+ In case of acceptance, the mapping handler, has to connect the driver into
+ his GPS navigation system by the opening of the related view, here the
+ path passing through the passenger location and going to his final destination
+ will be displayed.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+DBMS and Log-in
+\end_layout
+
+\begin_layout Standard
+This module has to deal with the user's personal data.
+ Since the only data needed by the application are the Log-In data related
+ with the personal data, this system has also to handle the log-in procedure.
+ It has to record in the DBMS the registration information and to query
+ the log-in information provided by the user, finally it has to checks if
+ there is a correct match.
+\end_layout
+
+\begin_layout Subsubsection
+Notification Center
+\end_layout
+
+\begin_layout Standard
+It has to update the view, providing the module outcomes to the end user
+ devices with a suitable notification.
+ The graphical representation of the information on the end user device
+ will change accordingly to the information stored in the notification.
+\end_layout
+
+\begin_layout Standard
+- non capita - This module manages any notification generated by a user,
+ whether it is a passenger or a taxi driver, or by the system itself, as
+ in the case of error messages.
+ The operations that this module handles are: generate an error message.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Server Controller
+\end_layout
+
+\begin_layout Standard
+This component represent the part of the system that is directly in contact
+ with the users.
+ It act as a glue between the view parts, loaded on the user's devices,
+ and the model parts, that is loaded on the server.
+ This part too has also to be loaded and performed by a dedicated server
+ area.
+\end_layout
+
+\begin_layout Subsubsection
+Passenger communicator
+\end_layout
+
+\begin_layout Standard
+This module is responsible of the correct forwarding information between
+ the server and a user.
+ The operations that this module handles are: receive a message from a user,
+ send a message to a user, handle timeout errors.
+\end_layout
+
+\begin_layout Subsubsection
+Driver communicator
+\end_layout
+
+\begin_layout Standard
+This module is responsible of the correct forwarding information between
+ the server and a driver.
+ The operations that this module handles are: receive a message from a driver
+ (including the availability state and the GPS positioning), send a message
+ to a driver, handle timeout errors.
+\end_layout
+
+\begin_layout Subsection
+Views
+\end_layout
+
+\begin_layout Standard
+This component is a collection of graphical views related to the suitable
+ devices and types of user.
+ For graphical views we mean the graphical representation of both the user
+ interface and the data computed by the model.
+ This component has to manage the different input possibilities and to represent
+ the results given by this inputs.
+ In any case, the adoption of cross platform technologies allow us to develop
+ one unique system interface that will be automatically adapted to a suitable
+ for both for the WEB application and the mobile application.
+ Several useful mockups that picture a complete framework of all the functionali
+ties requested by the user interfaces are stated in the RASD document.
+ Because of their completeness and clearness they are reasonably assumed
+ as an adequate support to the views development.
+ 
+\end_layout
+
+\begin_layout Standard
+mainly there are two different views to be developed, according to the user
+ types:
+\end_layout
+
+\begin_layout Subsubsection
+Passenger-views 
+\end_layout
+
+\begin_layout Standard
+This views has to provide an easy access to all and only the passenger functiona
+lities, it has to be mainly structured for the mobile applications, because
+ it will assumed that the most of the users will access to myTaxiService
+ with this interface.
+ all the functionalities are already sufficiently stated in the RASD.
+\end_layout
+
+\begin_layout Subsubsection
+Driver-views 
+\end_layout
+
+\begin_layout Standard
+This views has to provide an easy access to all and only the taxi driver
+ functionalities.
+ The same consideration made upon the passenger-view are also valid here.
+\end_layout
+
+\begin_layout Section
+Components scheme
+\end_layout
+
+\begin_layout Standard
+To have a better overview of the various components with the relevant modules
+ and their connection, it was decided to provide a general outline of the
+ system 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure}[H] 
+\backslash
+makebox[
+\backslash
+textwidth][c]{ 
+\backslash
+includegraphics[width=1.2
+\backslash
+textwidth]{
+\backslash
+string"DD images/Component scheme".png} } 
+\backslash
+end{figure}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Component View
+\end_layout
+
+\begin_layout Section
+Deployment View
+\end_layout
+
+\begin_layout Section
+Run-time View
+\end_layout
+
+\begin_layout Section
+Component Interfaces
+\end_layout
+
+\begin_layout Section
+Architectural Styles and Patterns
+\end_layout
+
+\begin_layout Standard
+Here are listed the main architectural styles and patterns choice.
+ Every choice is adequately motivate and is made in order to simplify the
+ design of intricate situations.
+\end_layout
+
+\begin_layout Subsection
+SOFTWARE 
+\end_layout
+
+\begin_layout Subsubsection
+MVC Pattern
+\end_layout
+
+\begin_layout Standard
+MVC is an essential, rock solid choice for each distributed architecture.
+ The pattern is perfectly suitable with the tier architecture model and
+ represent the 
+\begin_inset Quotes eld
+\end_inset
+
+best practice
+\begin_inset Quotes erd
+\end_inset
+
+ choice since many years.
+ Furthermore, every modern development environment automatically embedded
+ itself this structure, so it is in any case you cannot help avoiding his
+ use.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Event Based Pattern
+\end_layout
+
+\begin_layout Standard
+Event Based Pattern is implemented in the managing of the request.
+ The passenger-user could be seen as a publisher in the publish-subscribe
+ paradigms, and the taxi driver as the subscriber.
+ In this pattern, a request play the role of the event, it is up to the
+ system to ensure that actually not any taxi-driver subscriber can see the
+ request, but only the first taxi driver in the right queue.
+ We made this choice because firstly, the event base pattern, is another
+ well known, reliable pattern.
+ Secondly, in front of some little modifications in his implementation,
+ it can greatly do his job.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Plugin Architecture
+\end_layout
+
+\begin_layout Standard
+This architecture is implemented in order to ensure a chance to the future
+ functionality expandability.
+ Because of the forecast of a relative little future sets of different,
+ available plugin, the performance degrading typical of this architecture,
+ due to a massive installation of plugins, is not a big concern.
+ The application will be released correlate with the essential extension
+ point interfaces needed by this architecture.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+SOA Architecture
+\end_layout
+
+\begin_layout Standard
+The System adopt a proper service oriented architecture, either to use or
+ offer services.
+ 
+\end_layout
+
+\begin_layout Standard
+As stated in the RASD document, the whole map system is based upon the google
+ map API, so the architecture is necessarily to allow the useful implementation
+ of this features.
+ As decided with our stakeholders, we are going to release our own programmatic
+ interfaces.
+ This will provides third party companies with our module, knowledge and
+ algorithm carefully studied on this application case.
+ 
+\end_layout
+
+\begin_layout Standard
+Follow the list of the API to be released:
+\end_layout
+
+\begin_layout Itemize
+Queue Handler API, 
+\end_layout
+
+\begin_layout Itemize
+Shareable ride finder API,
+\end_layout
+
+\begin_layout Itemize
+Request manager API.
+ 
+\end_layout
+
+\begin_layout Standard
+About the major problems resulting from the adoption of this architecture:
+\end_layout
+
+\begin_layout Itemize
+Security is guaranteed by a careful separation between the sensible data
+ stored and managed only by the DBMS module and the data used by the services.
+\end_layout
+
+\begin_layout Itemize
+The optimal reliability of the message exchanged among the various services
+ shall be guaranteed by the handling of the sending/receiving failure.
+ 
+\end_layout
+
+\begin_layout Itemize
+Quality of service with regards of the service adopted is guaranteed by
+ the choice of well known ,widely used and reliable service.
+ Whereas the quality of service released by us, is guaranteed by a careful
+ planning and the adoption of all the necessary precaution.
+\end_layout
+
+\begin_layout Itemize
+Service maintainability will be facilitated by the simplicity of the services
+ offered.
+\end_layout
+
+\begin_layout Subsection
+HARDWARE 
+\end_layout
+
+\begin_layout Standard
+The Hardware Architecture will use the latest technology in the field of
+ Cloud Computing.
+ In particular it will be adopted the PAAS model.
+\end_layout
+
+\begin_layout Standard
+The Platform as a service (PAAS) adoption will provides a platform allowing
+ us to develop, run, and manage web applications without the complexity
+ of building and maintaining the infrastructure typically associated with
+ developing and launching of an app.
+ So our company will controls software deployment and configuration settings,
+ and the provider will provides the networks, servers, storage and all the
+ necessary services to host the application.
+ This translates into:
+\end_layout
+
+\begin_layout Itemize
+Significant cost reduction.
+\end_layout
+
+\begin_layout Itemize
+Significant developing time reduction.
+\end_layout
+
+\begin_layout Standard
+obviously with regards of the other architecture solution allowable (Hardware
+ infrastructure of our own, IAAS cloud architecture etcetera).
+\end_layout
+
+\begin_layout Chapter
+Algorithm Design
+\end_layout
+
+\begin_layout Standard
+The goal of this section is to provide the most relevant algorithmic part
+ of the project.
+ The code stated below is related to the most important modules analyzed
+ in the chapter 2.
+ Moreover the code is not complete.
+ It can be considered as a first implementation which aims to give a general
+ idea of the system core logic.
+ The code is written in Java.
+\end_layout
+
+\begin_layout Section
+Queue Handler
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{lstlisting}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+package server.model;
+\end_layout
+
+\begin_layout Plain Layout
+
+import java.util.LinkedList;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public class QueueHandler {
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private LinkedList<Driver> queue;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public QueueHandler() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.queue = new LinkedList<Driver>();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}          
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	//add a driver at the end of the queue
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void addDriver(Driver d){
+\end_layout
+
+\begin_layout Plain Layout
+
+		queue.add(d);     
+\end_layout
+
+\begin_layout Plain Layout
+
+	}          
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	//remove the first driver in the queue     
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void removeFirstDriver(){         
+\end_layout
+
+\begin_layout Plain Layout
+
+		queue.removeFirst();     
+\end_layout
+
+\begin_layout Plain Layout
+
+	}          
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	//return the first element in the queue     
+\end_layout
+
+\begin_layout Plain Layout
+
+	public Driver selectFirstDriver(){         
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (!queue.isEmpty())             
+\end_layout
+
+\begin_layout Plain Layout
+
+			return queue.getFirst();         
+\end_layout
+
+\begin_layout Plain Layout
+
+		else              
+\end_layout
+
+\begin_layout Plain Layout
+
+			return null; //here an error message can be sent     
+\end_layout
+
+\begin_layout Plain Layout
+
+	}          
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	//move the first driver from top to bottom     
+\end_layout
+
+\begin_layout Plain Layout
+
+	public void moveFirstToBack(){         
+\end_layout
+
+\begin_layout Plain Layout
+
+		Driver d = selectFirstDriver();         
+\end_layout
+
+\begin_layout Plain Layout
+
+		addDriver(d);         
+\end_layout
+
+\begin_layout Plain Layout
+
+		removeFirstDriver();     
+\end_layout
+
+\begin_layout Plain Layout
+
+	} 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{lstlisting} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
